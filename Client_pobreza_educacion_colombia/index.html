@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MongoDB Pagination</title>
+</head>
+<body>
+  <div id="data"></div>
+  <button onclick="prevPage()">Anterior</button>
+  <button onclick="nextPage()">Siguiente</button>
+
+  <script>
+    let page = 1;
+    const limit = 10; // Cambia a 100 si prefieres
+
+    async function fetchData() {
+      const response = await fetch(`http://localhost:3000/data?page=${page}&limit=${limit}`);
+      const data = await response.json();
+      document.getElementById('data').innerHTML = data.map(doc => `<div>${JSON.stringify(doc)}</div>`).join('');
+    }
+
+    function nextPage() {
+      page++;
+      fetchData();
+    }
+
+    function prevPage() {
+      if (page > 1) {
+        page--;
+        fetchData();
+      }
+    }
+
+    fetchData(); // Carga inicial
+  </script>
+</body>
+</html>
